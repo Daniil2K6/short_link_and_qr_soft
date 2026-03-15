@@ -398,6 +398,54 @@ short_link_and_QR/
 
 ### Страница Statistics
 ```
+
+## Quickstart — кратко и понятно
+
+1) Установить зависимости
+
+```bash
+cd backend
+npm install
+
+cd ../frontend
+npm install
+```
+
+2) Запустить backend (API)
+
+```bash
+cd backend
+# настроить .env (DB, SERVER_URL), затем:
+npm start
+```
+
+3) Запустить frontend (разработка)
+
+```bash
+cd frontend
+npm run dev
+# сайт будет доступен по адресу http://localhost:5173
+```
+
+4) Запустить консоль администратора
+
+```bash
+cd backend
+npm run admin
+# следуйте меню в терминале
+```
+
+5) Полезные ссылки
+
+- Веб-сайт (локально): http://localhost:5173
+- API (локально): http://localhost:3000
+
+6) Примечания
+
+- Файлы проекта находятся в папках `frontend/` и `backend/`.
+- В корне репозитория оставлены только метаданные (README, DEPLOYMENT.md) и папки проекта.
+- Для деплоя настройте `SERVER_URL` в `.env` и используйте секреты для базы данных.
+
 ╔════════════════════════════════════════════╗
 ║    Short Link & QR Code Generator          ║
 ║  Home | Dashboard | Statistics             ║
