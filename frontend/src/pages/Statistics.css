@@ -1,0 +1,119 @@
+.statistics-page {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  padding: 40px 20px;
+}
+
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.statistics-page h1 {
+  color: #333;
+  margin-bottom: 30px;
+}
+
+.stats-input {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 30px;
+}
+
+.stats-input input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.stats-input button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.stats-input button:hover {
+  background-color: #0056b3;
+}
+
+.error {
+  color: red;
+  margin-bottom: 20px;
+}
+
+.stats-display {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.stat-card {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.stat-card.full-width {
+  grid-column: 1 / -1;
+}
+
+.stat-card h3 {
+  margin: 0 0 15px 0;
+  color: #666;
+  font-size: 14px;
+  text-transform: uppercase;
+}
+
+.stat-value {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin: 0;
+  word-break: break-all;
+}
+
+.stat-value.url {
+  font-size: 14px;
+  color: #007bff;
+}
+
+.status-active {
+  color: #28a745;
+}
+
+.status-blocked {
+  color: #dc3545;
+}
+
+.status-inactive {
+  color: #999;
+}
+
+.clicks-table {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.click-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border-radius: 4px;
+}
+
+.click-row .date {
+  font-weight: bold;
+  color: #333;
+}
+
+.click-row .count {
+  color: #333;
+}
