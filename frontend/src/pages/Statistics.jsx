@@ -171,40 +171,6 @@ export const Statistics = () => {
 };
 
 export default Statistics;
-
-  return (
-    <div className="statistics-page">
-      <div className="container">
-        <h1>Link Statistics</h1>
-
-        <div className="stats-input">
-          <input
-            type="text"
-            placeholder="Enter Link ID or Short Code (e.g. abc123)..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            onKeyPress={(e) => e.key === 'Enter' && handleGetStats()}
-          />
-          <button onClick={handleGetStats} disabled={loading}>
-            {loading ? 'Loading...' : 'Get Statistics'}
-          </button>
-        </div>
-
-        {error && <p className="error">{error}</p>}
-
-        {stats && (
-          <div className="stats-display">
-            <div className="stat-card">
-              <h3>Short Code</h3>
-              <p className="stat-value">{stats.shortCode}</p>
-            </div>
-
-            <div className="stat-card">
-              <h3>Total Clicks</h3>
-              <p className="stat-value">{stats.clickCount}</p>
-            </div>
-
-            <div className="stat-card">
               <h3>Status</h3>
               <p className={`stat-value status-${stats.status}`}>{stats.status}</p>
             </div>
