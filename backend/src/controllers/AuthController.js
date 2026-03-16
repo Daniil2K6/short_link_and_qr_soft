@@ -5,23 +5,23 @@ const jwt = require('jsonwebtoken');
 class AuthController {
   static async register(req, res) {
     try {
-      const { email, username, password } = req.body;
+      let { email, username, password } = req.body;
 
       // Validation
-      if (!email || !username || !password) {
-        return res.status(400).json({ error: 'Email, username and password are required' });
+      if (!username || !password) {
+        return res.status(400).json({ error: 'Username and password are required' });
       }
 
-      if (password.length < 6) {
-        return res.status(400).json({ error: 'Password must be at least 6 characters' });
+      if (password.length < 3) {
+        return res.status(400).json({ error: 'Password must be at least 3 characters' });
       }
 
-      // Check if user already exists
-      const existingEmail = await User.findByEmail(email);
-      if (existingEmail) {
-        return res.status(409).json({ error: 'Email already registered' });
+      // Generate email if not provided
+      if (!email) {
+        email = `${username}@autogen.local`;
       }
 
+      // Check if username already exists
       const existingUsername = await User.findByUsername(username);
       if (existingUsername) {
         return res.status(409).json({ error: 'Username already taken' });

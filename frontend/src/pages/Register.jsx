@@ -4,10 +4,8 @@ import authService from '../services/authService';
 import './Register.css';
 
 function Register() {
-  const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -16,20 +14,20 @@ function Register() {
     e.preventDefault();
     setError('');
 
-    if (password !== confirmPassword) {
-      setError('Passwords do not match');
+    if (!username.trim() || !password.trim()) {
+      setError('Username and password are required');
       return;
     }
 
-    if (password.length < 6) {
-      setError('Password must be at least 6 characters');
+    if (password.length < 3) {
+      setError('Password must be at least 3 characters');
       return;
     }
 
     setLoading(true);
 
     try {
-      const user = await authService.register(email, username, password);
+      const user = await authService.register(username, password);
       navigate('/dashboard');
     } catch (err) {
       setError(err.message || 'Registration failed');
@@ -47,17 +45,6 @@ function Register() {
         
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label>Email:</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
-              required
-            />
-          </div>
-
-          <div className="form-group">
             <label>Username:</label>
             <input
               type="text"
@@ -74,18 +61,7 @@ function Register() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter a password (min 6 characters)"
-              required
-            />
-          </div>
-
-          <div className="form-group">
-            <label>Confirm Password:</label>
-            <input
-              type="password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              placeholder="Confirm your password"
+              placeholder="Enter any password (min 3 characters)"
               required
             />
           </div>
