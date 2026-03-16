@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const { initializeDatabase } = require('./database/db');
+const authRoutes = require('./routes/authRoutes');
 const apiRoutes = require('./routes/apiRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const redirectRoutes = require('./routes/redirectRoutes');
@@ -29,6 +30,7 @@ app.use((req, res, next) => {
 });
 
 // Routes
+app.use('/api', authRoutes);
 app.use('/api', apiRoutes);
 app.use('/api', adminRoutes);
 

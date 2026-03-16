@@ -77,3 +77,32 @@ body {
 .nav-menu a:hover {
   background-color: #555;
 }
+
+.nav-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 15px;
+}
+
+.username {
+  color: #fff;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.logout-btn {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+.logout-btn:hover {
+  background-color: #c82333;
+}

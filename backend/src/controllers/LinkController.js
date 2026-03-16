@@ -7,7 +7,7 @@ class LinkController {
   static async createLink(req, res) {
     try {
       const { originalUrl } = req.body;
-      const userId = req.body.userId || null;
+      const userId = req.user ? req.user.userId : null;
       const ipAddress = req.ip || req.connection.remoteAddress;
 
       if (!originalUrl) {
@@ -25,9 +25,9 @@ class LinkController {
         return res.status(400).json({ error: 'Cannot shorten an already shortened URL' });
       }
 
-      // Check if this URL already exists as an active link
+      // Check if this URL already exists as an active link (for this user if authenticated)
       const existingLink = await Link.findByOriginalUrl(originalUrl);
-      if (existingLink) {
+      if (existingLink && (userId === null || existingLink.user_id === userId)) {
         return res.status(201).json({
           id: existingLink.id,
           shortCode: existingLink.short_code,
@@ -114,6 +114,37 @@ class LinkController {
       });
     } catch (error) {
       console.error('Error fetching links:', error);
+      res.status(500).json({ error: 'Failed to fetch links' });
+    }
+  }
+
+  static async getUserLinks(req, res) {
+    try {
+      if (!req.user) {
+        return res.status(401).json({ error: 'Authentication required' });
+      }
+
+      const limit = Math.min(parseInt(req.query.limit) || 20, 100);
+      const offset = parseInt(req.query.offset) || 0;
+
+      const links = await Link.findByUserId(req.user.userId);
+
+      res.json({
+        links: links.slice(offset, offset + limit).map(link => ({
+          id: link.id,
+          shortCode: link.short_code,
+          originalUrl: link.original_url,
+          clickCount: link.click_count,
+          status: link.status,
+          createdAt: link.created_at,
+          shortUrl: `${process.env.SERVER_URL || 'http://localhost:3000'}/${link.short_code}`
+        })),
+        total: links.length,
+        limit,
+        offset
+      });
+    } catch (error) {
+      console.error('Error fetching user links:', error);
       res.status(500).json({ error: 'Failed to fetch links' });
     }
   }

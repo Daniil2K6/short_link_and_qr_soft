@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import authService from '../services/authService';
+import { apiService } from '../services/api';
 import './LinkGenerator.css';
 
 export const LinkGenerator = ({ onLinkCreated }) => {
   const [inputUrl, setInputUrl] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   const handleCreateLink = async () => {
     if (!inputUrl.trim()) {
@@ -12,25 +16,24 @@ export const LinkGenerator = ({ onLinkCreated }) => {
       return;
     }
 
+    // Check if user is authenticated
+    if (!authService.isAuthenticated()) {
+      setError('You must be logged in to create short links');
+      setTimeout(() => {
+        navigate('/login');
+      }, 1000);
+      return;
+    }
+
     setLoading(true);
     setError(null);
 
     try {
-      const response = await fetch('http://localhost:3000/api/links', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ originalUrl: inputUrl })
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to create short link');
-      }
-
-      const data = await response.json();
-      onLinkCreated(data);
+      const response = await apiService.createLink(inputUrl);
+      onLinkCreated(response.data);
       setInputUrl('');
     } catch (err) {
-      setError(err.message);
+      setError(err.response?.data?.error || err.message || 'Failed to create short link');
     } finally {
       setLoading(false);
     }

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { apiService } from '../services/api';
 import './Dashboard.css';
 
 export const Dashboard = () => {
@@ -12,12 +13,10 @@ export const Dashboard = () => {
 
   const fetchLinks = async () => {
     try {
-      const response = await fetch('http://localhost:3000/api/links?limit=50');
-      if (!response.ok) throw new Error('Failed to fetch links');
-      const data = await response.json();
-      setLinks(data.links);
+      const response = await apiService.getUserLinks(50, 0);
+      setLinks(response.data.links);
     } catch (err) {
-      setError(err.message);
+      setError(err.response?.data?.error || err.message || 'Failed to fetch links');
     } finally {
       setLoading(false);
     }
@@ -26,7 +25,7 @@ export const Dashboard = () => {
   return (
     <div className="dashboard-page">
       <div className="container">
-        <h1>Dashboard</h1>
+        <h1>My Links</h1>
 
         {loading && <p className="loading">Loading links...</p>}
         {error && <p className="error">{error}</p>}
