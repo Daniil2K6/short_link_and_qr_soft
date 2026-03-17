@@ -31,6 +31,7 @@ function Navbar({ user, onUserUpdate }) {
 
         <ul className="nav-menu">
           <li><Link to="/">Home</Link></li>
+          <li><Link to="/all-links">All Links</Link></li>
           
           {user && user.role !== 'admin' && (
             <>

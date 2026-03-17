@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Home from './pages/Home'
+import AllLinks from './pages/AllLinks'
 import Dashboard from './pages/Dashboard'
 import Statistics from './pages/Statistics'
 import MyLinks from './pages/MyLinks'
@@ -28,14 +29,6 @@ function App() {
     setUser(newUser);
   };
 
-  // Component for authenticated users on home page
-  const AuthenticatedHome = () => {
-    if (user?.role === 'admin') {
-      return <Dashboard />;
-    }
-    return <Dashboard />;
-  };
-
   // Redirect authenticated users away from login/register
   const LoginPage = () => {
     if (user) {
@@ -51,13 +44,6 @@ function App() {
     return <Register />;
   };
 
-  const HomePage = () => {
-    if (user) {
-      return <AuthenticatedHome />;
-    }
-    return <Home />;
-  };
-
   if (loading) {
     return <div className="loading-spinner">Loading...</div>;
   }
@@ -67,7 +53,8 @@ function App() {
       <Navbar user={user} onUserUpdate={handleUserUpdate} />
 
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/all-links" element={<AllLinks />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         
