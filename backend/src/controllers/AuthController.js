@@ -58,23 +58,23 @@ class AuthController {
 
   static async login(req, res) {
     try {
-      const { email, password } = req.body;
+      const { username, password } = req.body;
 
       // Validation
-      if (!email || !password) {
-        return res.status(400).json({ error: 'Email and password are required' });
+      if (!username || !password) {
+        return res.status(400).json({ error: 'Username and password are required' });
       }
 
       // Find user
-      const user = await User.findByEmail(email);
+      const user = await User.findByUsername(username);
       if (!user) {
-        return res.status(401).json({ error: 'Invalid email or password' });
+        return res.status(401).json({ error: 'Invalid username or password' });
       }
 
       // Check password
       const passwordMatch = await bcrypt.compare(password, user.password_hash);
       if (!passwordMatch) {
-        return res.status(401).json({ error: 'Invalid email or password' });
+        return res.status(401).json({ error: 'Invalid username or password' });
       }
 
       // Generate token
