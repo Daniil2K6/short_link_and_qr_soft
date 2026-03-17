@@ -27,3 +27,6 @@ pnpm-debug.log*
 
 # Mac
 *.DS_Store
+
+# Coursework (local only)
+COURSEWORK_INFO.md

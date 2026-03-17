@@ -5,8 +5,8 @@ const rateLimitMiddleware = require('../middleware/rateLimitMiddleware');
 
 const router = express.Router();
 
-// Create a short link (authenticated, with rate limiting)
-router.post('/links', authenticateToken, rateLimitMiddleware, LinkController.createLink);
+// Create a short link (for guests and authenticated users, with rate limiting)
+router.post('/links', rateLimitMiddleware, LinkController.createLink);
 
 // Get all links (for guests - public)
 router.get('/links', LinkController.getLinks);
