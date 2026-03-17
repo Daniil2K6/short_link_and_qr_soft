@@ -237,6 +237,39 @@ class LinkController {
       return false;
     }
   }
+
+  static async deleteUserLink(req, res) {
+    try {
+      const { id } = req.params;
+      const userId = req.user.userId;
+
+      // Get the link to verify ownership
+      const link = await Link.findById(id);
+      if (!link) {
+        return res.status(404).json({ error: 'Link not found' });
+      }
+
+      // Check if user owns this link
+      if (link.user_id !== userId) {
+        return res.status(403).json({ error: 'You can only delete your own links' });
+      }
+
+      // Delete the link (CASCADE will delete associated clicks)
+      const deletedLink = await Link.delete(id);
+
+      res.json({
+        message: 'Link deleted successfully',
+        link: {
+          id: deletedLink.id,
+          shortCode: deletedLink.short_code,
+          originalUrl: deletedLink.original_url
+        }
+      });
+    } catch (error) {
+      console.error('Error deleting link:', error);
+      res.status(500).json({ error: 'Failed to delete link' });
+    }
+  }
 }
 
 module.exports = LinkController;

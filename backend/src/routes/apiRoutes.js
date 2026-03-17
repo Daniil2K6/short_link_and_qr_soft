@@ -23,4 +23,7 @@ router.get('/links/:id/qrcode', LinkController.getQRCode);
 // Get QR code as image
 router.get('/links/:id/qrcode/image', LinkController.getQRCodeImage);
 
+// Delete a user's own link (authenticated)
+router.delete('/links/:id', authenticateToken, LinkController.deleteUserLink);
+
 module.exports = router;

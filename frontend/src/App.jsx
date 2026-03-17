@@ -1,9 +1,11 @@
 import './App.css'
 import { useState, useEffect } from 'react'
-import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
+import Navbar from './components/Navbar'
 import Home from './pages/Home'
 import Dashboard from './pages/Dashboard'
 import Statistics from './pages/Statistics'
+import MyLinks from './pages/MyLinks'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import AdminPanel from './pages/AdminPanel'
@@ -12,57 +14,62 @@ import authService from './services/authService'
 
 function App() {
   const [user, setUser] = useState(null);
-  const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const currentUser = authService.getUser();
     if (currentUser) {
       setUser(currentUser);
     }
+    setLoading(false);
   }, []);
 
-  const handleLogout = () => {
-    authService.logout();
-    setUser(null);
-    navigate('/');
+  const handleUserUpdate = (newUser) => {
+    setUser(newUser);
   };
+
+  // Component for authenticated users on home page
+  const AuthenticatedHome = () => {
+    if (user?.role === 'admin') {
+      return <Dashboard />;
+    }
+    return <Dashboard />;
+  };
+
+  // Redirect authenticated users away from login/register
+  const LoginPage = () => {
+    if (user) {
+      return <Navigate to="/dashboard" />;
+    }
+    return <Login />;
+  };
+
+  const RegisterPage = () => {
+    if (user) {
+      return <Navigate to="/dashboard" />;
+    }
+    return <Register />;
+  };
+
+  const HomePage = () => {
+    if (user) {
+      return <AuthenticatedHome />;
+    }
+    return <Home />;
+  };
+
+  if (loading) {
+    return <div className="loading-spinner">Loading...</div>;
+  }
 
   return (
     <>
-      <nav className="navbar">
-        <div className="nav-container">
-          <Link to="/" className="nav-brand">Short Link & QR</Link>
-          <ul className="nav-menu">
-            <li><Link to="/">Home</Link></li>
-            {user && !user.role === 'admin' && (
-              <>
-                <li><Link to="/dashboard">Dashboard</Link></li>
-                <li><Link to="/statistics">Statistics</Link></li>
-              </>
-            )}
-            {user && user.role === 'admin' && (
-              <li><Link to="/admin">Admin Panel</Link></li>
-            )}
-            
-            {user ? (
-              <li className="nav-user">
-                <span className="username">{user.username}</span>
-                <button onClick={handleLogout} className="logout-btn">Logout</button>
-              </li>
-            ) : (
-              <>
-                <li><Link to="/login">Login</Link></li>
-                <li><Link to="/register">Register</Link></li>
-              </>
-            )}
-          </ul>
-        </div>
-      </nav>
+      <Navbar user={user} onUserUpdate={handleUserUpdate} />
 
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        <Route path="/" element={<HomePage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
         
         <Route 
           path="/dashboard" 
@@ -78,6 +85,15 @@ function App() {
           element={
             <ProtectedRoute>
               <Statistics />
+            </ProtectedRoute>
+          } 
+        />
+
+        <Route 
+          path="/my-links" 
+          element={
+            <ProtectedRoute>
+              <MyLinks />
             </ProtectedRoute>
           } 
         />

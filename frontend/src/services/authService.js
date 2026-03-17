@@ -76,6 +76,26 @@ export const authService = {
   isAdmin: () => {
     const user = JSON.parse(localStorage.getItem('user') || '{}');
     return user.role === 'admin';
+  },
+
+  changePassword: async (currentPassword, newPassword) => {
+    const token = localStorage.getItem('token');
+    const response = await fetch(`${API_URL}/auth/change-password`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({ currentPassword, newPassword })
+    });
+    
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.error || 'Failed to change password');
+    }
+    
+    const data = await response.json();
+    return data;
   }
 };
 

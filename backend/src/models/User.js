@@ -12,7 +12,7 @@ class User {
   }
 
   static async findById(id) {
-    const query = 'SELECT id, email, username, role, created_at FROM users WHERE id = $1;';
+    const query = 'SELECT id, email, username, role, password_hash, created_at FROM users WHERE id = $1;';
     const result = await db.query(query, [id]);
     return result.rows[0];
   }
@@ -44,6 +44,12 @@ class User {
   static async updateRole(id, role) {
     const query = 'UPDATE users SET role = $1, updated_at = CURRENT_TIMESTAMP WHERE id = $2 RETURNING id, email, username, role;';
     const result = await db.query(query, [role, id]);
+    return result.rows[0];
+  }
+
+  static async updatePassword(id, passwordHash) {
+    const query = 'UPDATE users SET password_hash = $1, updated_at = CURRENT_TIMESTAMP WHERE id = $2 RETURNING id, email, username, role;';
+    const result = await db.query(query, [passwordHash, id]);
     return result.rows[0];
   }
 }

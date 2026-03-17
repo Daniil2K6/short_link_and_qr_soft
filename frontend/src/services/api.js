@@ -52,6 +52,11 @@ export const apiService = {
     return `${API_BASE_URL}/links/${id}/qrcode/image?token=${authService.getToken()}`;
   },
 
+  // Delete user's own link
+  deleteUserLink: (id) => {
+    return api.delete(`/links/${id}`);
+  },
+
   // ===== ADMIN =====
 
   // Get all users (admin only)

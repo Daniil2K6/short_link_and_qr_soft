@@ -114,6 +114,53 @@ class AuthController {
   static async logout(req, res) {
     res.json({ message: 'Logout successful' });
   }
+
+  static async changePassword(req, res) {
+    try {
+      const { currentPassword, newPassword } = req.body;
+      const userId = req.user.userId;
+
+      // Validation
+      if (!currentPassword || !newPassword) {
+        return res.status(400).json({ error: 'Current and new password are required' });
+      }
+
+      if (newPassword.length < 3) {
+        return res.status(400).json({ error: 'New password must be at least 3 characters' });
+      }
+
+      // Find user
+      const user = await User.findById(userId);
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+
+      // Verify current password
+      const passwordMatch = await bcrypt.compare(currentPassword, user.password_hash);
+      if (!passwordMatch) {
+        return res.status(401).json({ error: 'Current password is incorrect' });
+      }
+
+      // Hash new password
+      const newPasswordHash = await bcrypt.hash(newPassword, 10);
+
+      // Update password
+      const updatedUser = await User.updatePassword(userId, newPasswordHash);
+
+      res.json({
+        message: 'Password changed successfully',
+        user: {
+          id: updatedUser.id,
+          email: updatedUser.email,
+          username: updatedUser.username,
+          role: updatedUser.role
+        }
+      });
+    } catch (error) {
+      console.error('Change password error:', error);
+      res.status(500).json({ error: 'Failed to change password' });
+    }
+  }
 }
 
 module.exports = AuthController;
