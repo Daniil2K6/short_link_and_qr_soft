@@ -17,11 +17,8 @@ function Login() {
 
     try {
       const user = await authService.login(username, password);
-      if (user.role === 'admin') {
-        navigate('/admin');
-      } else {
-        navigate('/dashboard');
-      }
+      // Reload page to update navbar and user context
+      window.location.reload();
     } catch (err) {
       setError(err.message || 'Login failed');
     } finally {

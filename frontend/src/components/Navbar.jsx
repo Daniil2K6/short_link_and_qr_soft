@@ -31,11 +31,10 @@ function Navbar({ user, onUserUpdate }) {
 
         <ul className="nav-menu">
           <li><Link to="/">Home</Link></li>
-          <li><Link to="/all-links">All Links</Link></li>
+          <li><Link to="/dashboard">Dashboard</Link></li>
           
           {user && user.role !== 'admin' && (
             <>
-              <li><Link to="/dashboard">Dashboard</Link></li>
               <li><Link to="/statistics">Statistics</Link></li>
               <li><Link to="/my-links">My Links</Link></li>
             </>
