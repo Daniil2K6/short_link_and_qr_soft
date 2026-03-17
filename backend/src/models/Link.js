@@ -71,8 +71,33 @@ class Link {
   }
 
   static async getStats(id) {
-    const linkQuery = 'SELECT * FROM links WHERE id = $1;';
-    const link = await db.query(linkQuery, [id]);
+    // Check if id is numeric (actual ID) or string (short_code)
+    const isNumeric = !isNaN(id) && !isNaN(parseFloat(id));
+    
+    let linkResult;
+    
+    if (isNumeric) {
+      // First try by numeric ID
+      const linkQuery = 'SELECT * FROM links WHERE id = $1;';
+      linkResult = await db.query(linkQuery, [parseInt(id)]);
+    }
+    
+    // If not found or not numeric, try by short_code
+    if (!linkResult || linkResult.rows.length === 0) {
+      const linkQuery = 'SELECT * FROM links WHERE short_code = $1;';
+      linkResult = await db.query(linkQuery, [id]);
+    }
+    
+    // If still not found, return empty
+    if (!linkResult || linkResult.rows.length === 0) {
+      return {
+        link: null,
+        clicks: [],
+        sourceStats: []
+      };
+    }
+    
+    const linkId = linkResult.rows[0].id;
     
     const clicksQuery = `
       SELECT 
@@ -84,7 +109,7 @@ class Link {
       GROUP BY DATE(created_at)
       ORDER BY click_date DESC;
     `;
-    const clicks = await db.query(clicksQuery, [id]);
+    const clicks = await db.query(clicksQuery, [linkId]);
 
     const sourceQuery = `
       SELECT 
@@ -94,10 +119,10 @@ class Link {
       WHERE link_id = $1
       GROUP BY source;
     `;
-    const sourceStats = await db.query(sourceQuery, [id]);
+    const sourceStats = await db.query(sourceQuery, [linkId]);
     
     return {
-      link: link.rows[0],
+      link: linkResult.rows[0],
       clicks: clicks.rows,
       sourceStats: sourceStats.rows
     };

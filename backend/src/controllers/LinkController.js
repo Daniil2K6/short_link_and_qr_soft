@@ -169,7 +169,7 @@ class LinkController {
         sourceStats: stats.sourceStats
       });
     } catch (error) {
-      console.error('Error fetching stats:', error);
+      console.error('Error fetching stats:', error.message);
       res.status(500).json({ error: 'Failed to fetch statistics' });
     }
   }

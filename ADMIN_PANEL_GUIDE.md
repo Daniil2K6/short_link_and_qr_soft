@@ -109,7 +109,7 @@ ID: 2
 2. Нажмите "Login"
 3. Введите email админа:
    Email: admin@short-link.com
-   Password: Admin@1234
+   Password: admin
 4. Нажмите "Login"
 5. Откройте http://localhost:5175/admin
 ```

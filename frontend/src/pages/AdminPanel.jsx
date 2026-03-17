@@ -229,7 +229,7 @@ function AdminPanel() {
                         >
                           <option value="active">Active</option>
                           <option value="blocked">Blocked</option>
-                          <option value="inactive">Inactive</option>
+                          <option value="inactiv">Inactiv</option>
                         </select>
                       </td>
                       <td>{new Date(link.createdAt).toLocaleDateString()}</td>
@@ -304,7 +304,7 @@ function AdminPanel() {
                           >
                             <option value="active">Active</option>
                             <option value="blocked">Blocked</option>
-                            <option value="inactive">Inactive</option>
+                            <option value="inactiv">Inactiv</option>
                           </select>
                         </td>
                         <td>{new Date(link.createdAt).toLocaleDateString()}</td>

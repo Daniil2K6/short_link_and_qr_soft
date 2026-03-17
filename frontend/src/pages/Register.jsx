@@ -28,7 +28,8 @@ function Register() {
 
     try {
       const user = await authService.register(username, password);
-      navigate('/dashboard');
+      // Reload page to update navbar and user context
+      window.location.reload();
     } catch (err) {
       setError(err.message || 'Registration failed');
     } finally {

@@ -66,7 +66,7 @@ class AdminController {
         return res.status(400).json({ error: 'Status is required' });
       }
 
-      if (!['active', 'blocked', 'inactive'].includes(status)) {
+      if (!['active', 'blocked', 'inactiv'].includes(status)) {
         return res.status(400).json({ error: 'Invalid status' });
       }
 

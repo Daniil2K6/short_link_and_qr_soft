@@ -47,7 +47,7 @@ export const Dashboard = () => {
 
   const fetchLinks = async () => {
     try {
-      const response = await apiService.getUserLinks(50, 0);
+      const response = await apiService.getLinks(100, 0);
       setLinks(response.data.links);
       setFilteredLinks(response.data.links);
     } catch (err) {
@@ -60,7 +60,7 @@ export const Dashboard = () => {
   return (
     <div className="dashboard-page">
       <div className="container">
-        <h1>My Links</h1>
+        <h1>All Links</h1>
 
         {loading && <p className="loading">Loading links...</p>}
         {error && <p className="error">{error}</p>}
@@ -128,7 +128,7 @@ export const Dashboard = () => {
         )}
 
         {!loading && links.length === 0 && !error && (
-          <p className="empty">No links created yet. Start by creating your first short link!</p>
+          <p className="empty">No links available yet.</p>
         )}
       </div>
     </div>
