@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import authService from '../services/authService';
 import { apiService } from '../services/api';
 import './LinkGenerator.css';
 
@@ -8,20 +6,10 @@ export const LinkGenerator = ({ onLinkCreated }) => {
   const [inputUrl, setInputUrl] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const navigate = useNavigate();
 
   const handleCreateLink = async () => {
     if (!inputUrl.trim()) {
       setError('Please enter a URL');
-      return;
-    }
-
-    // Check if user is authenticated
-    if (!authService.isAuthenticated()) {
-      setError('You must be logged in to create short links');
-      setTimeout(() => {
-        navigate('/login');
-      }, 1000);
       return;
     }
 
